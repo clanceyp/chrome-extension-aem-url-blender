@@ -4,7 +4,7 @@
   "name": "AEM URL Blender",
   "short_name": "AEM URL Blender",
   "description": "This extension adds a page action menu item to switch URLs for Adobe AEM and other large projects",
-  "homepage_url": "https://github.com/clanceyp/chrome-extension-domain-switcher",
+  "homepage_url": "https://github.com/clanceyp/chrome-extension-aem-url-blender",
   "permissions": [
     "activeTab",
     "storage"
