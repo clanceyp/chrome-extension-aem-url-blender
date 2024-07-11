@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>List generated URLs</title>
+    <style>
+        body, ul, li {
+            margin: 0;
+            min-width: 200px;
+            padding: 0;
+        }
+        a {
+            color: #333;
+            border-bottom: 1px solid silver;
+            display: block;
+            margin: 0;
+            padding: 12px 32px;
+            white-space: nowrap;
+            text-decoration: none;
+            transition: all 300ms;
+        }
+        a:not([href]) {
+            cursor: default;
+        }
+        li:last-child:not(:first-child) a[href]:focus,
+        li:last-child:not(:first-child) a[href]:hover,
+        nav a[href]:focus, nav a[href]:hover {
+            background-color: #888;
+            color: #fff;
+            outline: 0 none;
+        }
+        li:nth-last-child(-n+1) a {
+            border-bottom: 0 none;
+        }
+        li:last-child:not(:first-child) a {
+            background-color: #eee;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <ul id="generated-urls">
+            <li><a id="options-link" target="_blank">Settings</a></li>
+        </ul>
+    </nav>
+    <script type="module" src="./popup.js"></script>
+</body>
+
+</html>
