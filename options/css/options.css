@@ -2,7 +2,7 @@
     --accent-color: coral;
 }
 p {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
 }
 fieldset:has([aria-invalid=true]) legend,
 fieldset:has([aria-invalid=true]) h2 {
