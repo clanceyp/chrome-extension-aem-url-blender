@@ -86,6 +86,9 @@ function debounce(func, timeout = 300){
         timer = setTimeout(() => { func.apply(this, args); }, timeout);
     };
 }
+function delay(func, delay = 100){
+    setTimeout(func, delay);
+}
 function empty(element) {
     element.querySelectorAll(":scope > *").forEach(el => el.remove() );
     return element;
@@ -229,5 +232,6 @@ export {
     sortByLabel,
     getAllMatchingData,
     draggable,
-    isValidJson
+    isValidJson,
+    delay
 }

@@ -16,7 +16,8 @@ import {
     validateRegExp,
     sortByLabel,
     draggable,
-    isValidJson
+    isValidJson,
+    delay
 } from "./option-utils.js"
 
 let sections = []
@@ -48,11 +49,17 @@ const eventUtils = {
         try {
             sections = JSON.parse(settingsEditArea.value);
         } catch (e) {
-            console.log(e)
+            console.error(e);
             alert("Couldn't parse the section string, please see error in the browser console");
             return;
         }
+        alert("Thank you. Your settings have been updated.");
         reset();
+        delay(() => {
+            // click on the menu
+            document.querySelector('[href="#sectionAbout"]').click();
+        });
+
     },
     validateRegEx: (e) => {
         e.target.setAttribute("aria-invalid", (!validateRegExp( e.target.value )).toString() )
@@ -304,10 +311,6 @@ function formUpdate(e) {
     }
     if (target.matches("[data-view-sections-storage]")) {
         eventUtils.loadAndViewSectionStorage(e);
-        // e.preventDefault();
-        // settingsEditArea.value = JSON.stringify(sections,undefined, 4);
-        // document.querySelectorAll('[data-save-sections-storage]')
-        //     .forEach(el => el.removeAttribute("disabled"))
     }
     if (target.matches("[data-update-on-input]") && e.type === "input") {
         eventUtils.updateOnInput(e);
@@ -381,6 +384,7 @@ function reset() {
     empty(menu);
     empty(settingsFormDynamicSection);
     getSectionsData(populateSectionData);
+
 }
 async function init() {
     populateManifestData();
