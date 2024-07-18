@@ -17,7 +17,9 @@ import {
     sortByLabel,
     draggable,
     isValidJson,
-    delay
+    delay,
+    regExCapturingGroupIsMatch,
+    getParentSection
 } from "./option-utils.js"
 
 let sections = []
@@ -61,8 +63,14 @@ const eventUtils = {
         });
 
     },
-    validateRegEx: (e) => {
-        e.target.setAttribute("aria-invalid", (!validateRegExp( e.target.value )).toString() )
+    validateRegEx: ( { target } ) => {
+        target.setAttribute("aria-invalid", (!validateRegExp( target.value )).toString() )
+    },
+    validateRegExCaptureCount: ( { target } ) => {
+        if (target.matches("[data-key]")) {
+            eventUtils.validateRegEx( { target } )
+            target.setAttribute("data-capturing-group-count-match", regExCapturingGroupIsMatch( target.value, getParentSection(target) ));
+        }
     },
     updateOnInput: (e) => {
         e.preventDefault();
@@ -372,6 +380,9 @@ function addEventListeners() {
     settingsForm.addEventListener("input", debounce((e) => formUpdate(e)));
     settingsForm.addEventListener("click", formUpdate);
     settingsForm.addEventListener("submit", e => e.preventDefault());
+    settingsForm.addEventListener("input", (e) => {
+        eventUtils.validateRegExCaptureCount(e);
+    })
 
     document.documentElement.addEventListener("mousedown", draggable.enable)
     document.documentElement.addEventListener("dragstart", draggable.dragstart);
