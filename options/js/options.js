@@ -246,7 +246,7 @@ function populateSectionData(s) {
     sections.forEach(addMenuItem);
     sections.forEach(addMainFormSection);
     addMenuHMTL(`<li class="settings__navigation-item" id="sectionAboutNavItem">
-        <a class="settings__navigation-link" aria-current="false" href="#sectionAbout">About</a>
+        <a class="settings__navigation-link" aria-current="false" href="#sectionAbout">${ document.querySelector("#sectionAbout h2").textContent }</a>
     </li>`);
     // show default form fieldset
     document.querySelector(".settings__section")

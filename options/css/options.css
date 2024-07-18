@@ -153,6 +153,7 @@ fieldset:not([aria-hidden="false"]) {
     .settings__navigation-list.uk-nav {
         align-items: stretch;
         display: flex;
+        flex-wrap: wrap;
     }
     .settings__navigation-list.uk-nav a {
         height: 100%;
