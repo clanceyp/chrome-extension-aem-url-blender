@@ -129,7 +129,7 @@ function generateUrlsList(url, data) {
             console.log(`Ignoring "${ item.label }". A menu item with the url ${ processedUrl } already exits in the menu.`);
         } else {
             list.push({
-                label: item.label || "",
+                label: item.label || "[LABEL MISSING]",
                 url: processedUrl,
                 match: processedUrl === url,
             });
