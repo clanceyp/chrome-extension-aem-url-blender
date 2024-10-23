@@ -15,6 +15,7 @@
                 <div>
                     <h1 class="header__heading">
                         <span data-manifest="name"></span> - Settings
+                        <small data-prefix=" v" data-manifest="version"></small>
                     </h1>
                     <p data-manifest="description"></p>
                 </div>
@@ -32,10 +33,18 @@
                     </div>
                     <fieldset id="sectionAbout" class="settings__section uk-fieldset" aria-hidden="true">
                         <div>
-                            <h2>About</h2>
-                            <p><span class="appName" data-manifest="name"></span> version: <strong class="appVersion" data-manifest="version"></strong></p>
+                            <h2>About and Help</h2>
+                            <p>
+                                <span class="appName" data-manifest="name"></span>
+                                version: <strong class="appVersion" data-manifest="version"></strong>
+                            </p>
                             <p data-manifest="description"></p>
                             <hr class="">
+                            <h3>RegExp</h3>
+                            <p>
+                                The Reg Exp column on the left allows for multiple regular expressions,
+                                these should all have the same number of capturing groups.
+                            </p>
                             <p>
                                 For RegExp help see <a href="https://regex101.com/" target="_blank">regex101.com</a>
                             </p>
@@ -43,7 +52,6 @@
                             <p>
                                 If you get an error e.g. can't open a section, inspect the current sections stage json,
                                 remove any suspect regex strings and add them back one at a time until you find the one causing the error.
-
                             </p>
                             <p>Found a bug? Please report it, or fix it, on <a href="https://github.com/clanceyp/chrome-extension-aem-url-blender" target="_blank">Github</a> </p>
                             <div>

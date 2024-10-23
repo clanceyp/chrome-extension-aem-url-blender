@@ -17,7 +17,9 @@ import {
     sortByLabel,
     draggable,
     isValidJson,
-    delay
+    delay,
+    regExCapturingGroupIsMatch,
+    getParentSection
 } from "./option-utils.js"
 
 let sections = []
@@ -61,8 +63,14 @@ const eventUtils = {
         });
 
     },
-    validateRegEx: (e) => {
-        e.target.setAttribute("aria-invalid", (!validateRegExp( e.target.value )).toString() )
+    validateRegEx: ( { target } ) => {
+        target.setAttribute("aria-invalid", (!validateRegExp( target.value )).toString() )
+    },
+    validateRegExCaptureCount: ( { target } ) => {
+        if (target.matches("[data-key]")) {
+            eventUtils.validateRegEx( { target } )
+            target.setAttribute("data-capturing-group-count-match", regExCapturingGroupIsMatch( target.value, getParentSection(target) ));
+        }
     },
     updateOnInput: (e) => {
         e.preventDefault();
@@ -187,9 +195,9 @@ function generateTable(section) {
 }
 function generateTableRow(key, value = "", label = "") {
     return `<tr>
-            <td><input class="uk-input" data-update-on-input value="${ key }" data-key type="text" aria-invalid="${ (!validateRegExp( key )).toString() }"></td>
-            <td><input class="uk-input" data-update-on-input value="${ value }" data-value type="text"></td>
-            <td><input class="uk-input" data-update-on-input value="${ label }" data-label type="text"></td>
+            <td><input aria-label="URL match" class="uk-input" data-update-on-input value="${ key }" data-key type="text" aria-invalid="${ (!validateRegExp( key )).toString() }"></td>
+            <td><input aria-label="URL to generate" class="uk-input" data-update-on-input value="${ value }" data-value type="text"></td>
+            <td><input aria-label="Menu label" class="uk-input" data-update-on-input value="${ label }" data-label type="text"></td>
             <td><button class="uk-icon-button uk-icon-button--delete" title="Delete this row" data-remove-row data-drag-handle aria-label="Remove row"><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0 0 24 24" role="presentation"><use href="#TrashCan" /></svg></button></td>
         </tr>`;
 }
@@ -223,7 +231,7 @@ function populateSectionData(s) {
             </legend>
             ${ generateTable(section) }
             <div class="section__test">
-                <input class="uk-input" data-test-url value="${ section.testUrl || "" }" placeholder="http://localhost:4502/content/wknd-events/react/home/first-article.html">
+                <input aria-label="Test URL" class="uk-input" data-test-url value="${ section.testUrl || "" }" placeholder="http://localhost:4502/content/wknd-events/react/home/first-article.html">
                 <button data-run-regex class="test__button uk-button uk-button-default" aria-label="Test section"></button>
                 <ul data-results></ul>
             </div>
@@ -238,7 +246,7 @@ function populateSectionData(s) {
     sections.forEach(addMenuItem);
     sections.forEach(addMainFormSection);
     addMenuHMTL(`<li class="settings__navigation-item" id="sectionAboutNavItem">
-        <a class="settings__navigation-link" aria-current="false" href="#sectionAbout">About</a>
+        <a class="settings__navigation-link" aria-current="false" href="#sectionAbout">${ document.querySelector("#sectionAbout h2").textContent }</a>
     </li>`);
     // show default form fieldset
     document.querySelector(".settings__section")
@@ -372,6 +380,9 @@ function addEventListeners() {
     settingsForm.addEventListener("input", debounce((e) => formUpdate(e)));
     settingsForm.addEventListener("click", formUpdate);
     settingsForm.addEventListener("submit", e => e.preventDefault());
+    settingsForm.addEventListener("input", (e) => {
+        eventUtils.validateRegExCaptureCount(e);
+    })
 
     document.documentElement.addEventListener("mousedown", draggable.enable)
     document.documentElement.addEventListener("dragstart", draggable.dragstart);

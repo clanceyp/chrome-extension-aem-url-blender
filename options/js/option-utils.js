@@ -129,7 +129,7 @@ function generateUrlsList(url, data) {
             console.log(`Ignoring "${ item.label }". A menu item with the url ${ processedUrl } already exits in the menu.`);
         } else {
             list.push({
-                label: item.label || "",
+                label: item.label || "[LABEL MISSING]",
                 url: processedUrl,
                 match: processedUrl === url,
             });
@@ -170,6 +170,19 @@ function setSectionsData() {
 function getSection(sectionId) {
     return sections.find( section => section.id === sectionId );
 }
+function getSectionById(sectionId) {
+    return sections.find( section => section.id === sectionId );
+}
+function getSectionId(element) {
+    return element.closest("[data-section-id]")?.dataset.sectionId;
+}
+function getParentSection(element) {
+    try {
+        return getSectionById( getSectionId(element) );
+    } catch (e) {
+        return null;
+    }
+}
 function getSectionIndex(id) {
     return sections.findIndex( section => section.id === id );
 }
@@ -180,6 +193,21 @@ function validateRegExp(text) {
         return false;
     }
     return true;
+}
+function regExCapturingGroupIsMatch(reStr, section) {
+    const firstRe = section.data[0].key;
+    if (firstRe === reStr || !reStr) {
+        return true;
+    }
+    return regExCapturingGroupMatchCount(firstRe) === regExCapturingGroupMatchCount(reStr);
+}
+function regExCapturingGroupMatchCount(reStr) {
+    try {
+        return (new RegExp(`${ reStr }|`)).exec('').length - 1;
+    } catch (e) {
+        console.warn("RegEx error", e);
+        return 0;
+    }
 }
 function sortByLabel( a, b ) {
     const a_label = (a.label || "").toLowerCase();
@@ -233,5 +261,7 @@ export {
     getAllMatchingData,
     draggable,
     isValidJson,
-    delay
+    delay,
+    getParentSection,
+    regExCapturingGroupIsMatch
 }
