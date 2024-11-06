@@ -16,8 +16,10 @@ function openLink(e) {
 }
 function loadListItems(list) {
     let listHTML = ""
+    const urlsList = []
     list.sort(sortByLabel).forEach( item => {
-        if (!item.match && item.label) { // ignore the current url and anything without a label
+        if (!item.match && !urlsList.includes(item.url)) { // match === currentUrl
+            urlsList.push(item.url); // TODO; remove duplicates in bg page
             listHTML += `<li><a href="${ item.url }" title="${ item.url }" data-action-create-tab>${ item.label }</a></li>`;
         }
     });
