@@ -29,6 +29,7 @@ const settingsForm = document.querySelector('[id="settings-form"]');
 const settingsFormDynamicSection = settingsForm.querySelector(".dynamic-section");
 const settingsEditArea = document.querySelector('[id="settings-as-string-input"]');
 const saveRawInputButton = document.querySelector('[data-save-sections-storage]');
+const downloadRawInputButton = document.querySelector('[data-save-sections-storage-download]');
 const eventUtils = {
     loadAndViewSectionStorage: (e) => {
         e.preventDefault();
@@ -41,9 +42,11 @@ const eventUtils = {
         if (isValidJson(settingsEditArea.value)) {
             target.setAttribute("aria-invalid", "false");
             saveRawInputButton.removeAttribute("disabled");
+            downloadRawInputButton.removeAttribute("disabled");
         } else {
             target.setAttribute("aria-invalid", "true");
             saveRawInputButton.setAttribute("disabled","true");
+            downloadRawInputButton.setAttribute("disabled","true");
         }
     },
     saveSettingsFromTextInput: (e) => {
@@ -314,6 +317,9 @@ function formUpdate(e) {
     if (target === saveRawInputButton) {
         eventUtils.saveSettingsFromTextInput(e);
     }
+    if (target === downloadRawInputButton) {
+        saveSettingsAsFile();
+    }
     if (target === settingsEditArea && e.type === "input") {
         eventUtils.validateSettingsFromTextInput(e);
     }
@@ -396,6 +402,25 @@ function reset() {
     empty(settingsFormDynamicSection);
     getSectionsData(populateSectionData);
 
+}
+function saveSettingsAsFile() {
+    const text = settingsEditArea.value = JSON.stringify(sections,undefined, 4);
+    const blob = new Blob([text], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const filename = prompt("File name", `aem-url-blender-settings-${ +(new Date()) }.json`)
+
+    if (blob && filename) {
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = filename; // Filename for download
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        document.body.removeChild(link); // Clean up after download
+        URL.revokeObjectURL(url); // Release the URL object
+    }
 }
 async function init() {
     populateManifestData();
