@@ -129,12 +129,18 @@ fieldset:not([aria-hidden="false"]) {
 .uk-table th {
     color: #666;
 }
+.uk-textarea {
+    font-family: Consolas, monaco, monospace;
+}
 .uk-textarea:not(:placeholder-shown) {
-    color: white;
-    background-color: #111;
+    background-color: #353535;
+    color: #f7f7b5;
+}
+.uk-textarea:placeholder-shown {
+    background-color: #a3a3a3;
 }
 .uk-textarea::placeholder {
-    color: white;
+    color: transparent;
 }
 [data-prefix]::before {
     content: attr(data-prefix);
