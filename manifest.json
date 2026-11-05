@@ -1,5 +1,5 @@
 {
-  "version": "3.0.4",
+  "version": "3.0.5",
   "manifest_version": 3,
   "name": "AEM URL Blender",
   "short_name": "AEM URL Blender",
@@ -7,8 +7,13 @@
   "homepage_url": "https://github.com/clanceyp/chrome-extension-aem-url-blender",
   "permissions": [
     "activeTab",
+    "notifications",
     "storage"
   ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
   "options_page": "options/index.html",
   "icons": {
 	"48": "/lib/icon/swap.white.png",

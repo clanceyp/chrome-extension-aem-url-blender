@@ -49,7 +49,7 @@ const eventUtils = {
             downloadRawInputButton.setAttribute("disabled","true");
         }
     },
-    saveSettingsFromTextInput: (e) => {
+    saveSettingsFromTextInput: async (e) => {
         e.preventDefault();
         try {
             sections = JSON.parse(settingsEditArea.value);
@@ -58,6 +58,7 @@ const eventUtils = {
             alert("Couldn't parse the section string, please see error in the browser console");
             return;
         }
+        await chrome.storage.local.remove(sectionsDataKey);
         alert("Thank you. Your settings have been updated.");
         reset();
         delay(() => {
@@ -131,7 +132,7 @@ const eventUtils = {
         if (confirm(`You are about to remove "${ title }" section, are you sure?`)) {
             removeSection( sectionId );
         }
-    }
+    },
 }
 function getMenuItemFromSection(el) {
     // get section id
